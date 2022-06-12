@@ -198,6 +198,23 @@ public class PlayerMovement : MonoBehaviour
             speed = groundSpeed;
         }
     }
+
+    public void fuelRefill()
+    {
+        jetFuel += 10;
+        if (jetFuel > 100)
+        {
+            jetFuel = 100;
+        }
+    }
+
+    public void refillAll()
+    {
+        jetFuel = 100;
+        jumpsLeft = 2;
+        dashesLeft = 1;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log("check");

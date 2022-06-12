@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-
     private static AudioManager instance;
     public static AudioManager Instance { get { return instance; } }
-
 
     private AudioSource audioSource;
 
     [SerializeField] AudioClip jumpSound;
     [SerializeField] AudioClip dashSound;
     [SerializeField] AudioClip coinSound;
+    [SerializeField] AudioClip coolerCoinSound;
     [SerializeField] AudioClip jetPackSound;
 
     private void Awake()
@@ -42,6 +41,11 @@ public class AudioManager : MonoBehaviour
     public void PlayCoinSound()
     {
         audioSource.PlayOneShot(coinSound);
+    }
+
+    public void PlayCoolerCoinSound()
+    {
+        audioSource.PlayOneShot(coolerCoinSound);
     }
 
 
