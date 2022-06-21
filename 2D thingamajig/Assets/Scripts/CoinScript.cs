@@ -1,15 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CoinScript : MonoBehaviour
 {
+
+    private Timer timer;
     [SerializeField] int coinValue;
     private ParticleSystem coinPfx;
 
     private void Start()
     {
+        timer = GameObject.Find("TimerHolder").GetComponent<Timer>();
         coinPfx = GetComponent<ParticleSystem>();
+        GameManager.Instance.ResetGame();
 
         SpawnInNewLocation();
     }
@@ -22,9 +27,9 @@ public class CoinScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-
         if (other.name == "Player")
         {
+            timer.timeLeft = timer.resetTime;
             coinPfx.Emit(300);
             GameManager.Instance.AddScore(coinValue);
             SpawnInNewLocation();
