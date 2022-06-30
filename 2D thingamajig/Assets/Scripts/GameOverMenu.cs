@@ -18,6 +18,8 @@ public class GameOverMenu : MonoBehaviour
         mainMenuButton.onClick.AddListener(() => { ReturnToMainMenu(); });
 
         gameOverScoreText.text = "Your score was: " + GameManager.Instance.score;
+
+        GameManager.Instance.DestroyThyself();
     }
 
     private void Retry()

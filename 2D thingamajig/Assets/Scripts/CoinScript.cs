@@ -14,14 +14,21 @@ public class CoinScript : MonoBehaviour
     {
         timer = GameObject.Find("TimerHolder").GetComponent<Timer>();
         coinPfx = GetComponent<ParticleSystem>();
-        GameManager.Instance.ResetGame();
-
+        
         SpawnInNewLocation();
     }
 
     private void SpawnInNewLocation()
     {
-        Vector2 newLocation =new Vector2(Random.Range(-20f, 20f), Random.Range(0f, 18f));
+        Vector2 currentLocation = transform.position;
+        Vector2 newLocation = new Vector2(Random.Range(-20f, 20f), Random.Range(0f, 18f));
+
+        Vector2 comparePos = currentLocation - newLocation;
+        if (comparePos.x < 2f || comparePos.y < 2f)
+        {
+            newLocation = new Vector2(Random.Range(-20f, 20f), Random.Range(0f, 18f));
+        }
+
         transform.position = newLocation;
     }
 

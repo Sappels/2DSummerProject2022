@@ -5,8 +5,17 @@ using DG.Tweening;
 
 public class CameraShake : MonoBehaviour
 {
-    public void CameraShakeFx()
+    public void CameraShakeFx(float shakeStrength)
     {
-        transform.DOShakePosition(0.5f);
+        if (GameManager.Instance.shakeHarder)
+        {
+            transform.DOShakePosition(shakeStrength * 3);
+        }
+        else
+        {
+            transform.DOShakePosition(shakeStrength);
+        }
+
+        GameManager.Instance.shakeHarder = false;
     }
 }

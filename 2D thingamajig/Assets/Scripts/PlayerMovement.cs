@@ -101,7 +101,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector2 mDir = moveDir;
         mDir.y = 0;
-        rb2d.AddForce(speed * mDir * Time.deltaTime, ForceMode2D.Impulse);
+        rb2d.AddForce(speed * mDir * GameManager.Instance.gameSpeed * Time.deltaTime, ForceMode2D.Impulse);
     }
     void MidAirDash(InputAction.CallbackContext obj)
     {
@@ -154,7 +154,7 @@ public class PlayerMovement : MonoBehaviour
             //AudioManager.Instance.PlayJetPackSound();
             isGrounded = false;
             rb2d.gravityScale = 6;
-            rb2d.AddForce(jetPower * Vector2.up * Time.deltaTime, ForceMode2D.Impulse);
+            rb2d.AddForce(jetPower * Vector2.up * GameManager.Instance.gameSpeed * Time.deltaTime, ForceMode2D.Impulse);
             jetFuel -= Time.deltaTime * fuelDrain;
         }
         else
@@ -180,7 +180,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (rb2d.gravityScale < 20)
             {
-                rb2d.gravityScale += 20 * Time.deltaTime;
+                rb2d.gravityScale += 20 * GameManager.Instance.gameSpeed * Time.deltaTime;
             }
         }
     }
@@ -213,6 +213,12 @@ public class PlayerMovement : MonoBehaviour
         jetFuel = 100;
         jumpsLeft = 2;
         dashesLeft = 1;
+    }
+
+    public void SpeedThingsUp(float speedFactor)
+    {
+        dashPower *= speedFactor;
+        //jumpPower *= speedFactor;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

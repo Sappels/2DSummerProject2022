@@ -8,7 +8,10 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public bool hasGameStarted = false;
+    public bool shakeHarder;
     public int score;
+    public float gameSpeed;
+
 
     private CameraShake cameraShake;
     public TMP_Text scoreText;
@@ -28,8 +31,9 @@ public class GameManager : MonoBehaviour
 
         Application.targetFrameRate = 120;
         hasGameStarted = false;
-        if (SceneManager.GetActiveScene().name == "GameScene");
+        if (SceneManager.GetActiveScene().name == "GameScene")
         {
+            ResetGame();
             scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
         }
         scoreText.text = "Score: " + score;
@@ -45,6 +49,7 @@ public class GameManager : MonoBehaviour
     public void ResetGame()
     {
         hasGameStarted = false;
+        gameSpeed = 1f;
         scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
         score = 0;
     }
@@ -52,35 +57,35 @@ public class GameManager : MonoBehaviour
     public void AddScore(int scoreValue)
     {
         score += scoreValue;
-        PlayScoreFx();
-        CheckIfTimeToDecreaseTimeToLose();
+        ModulusChecks();
 
         scoreText.text = "Score: " + score;
     }
 
-    private void CheckIfTimeToDecreaseTimeToLose()
+    private void DecreaseTimeToLose()
     {
-        int difficultyCheck = score % 50;
-        if (difficultyCheck == 0 && score <= 200)
+        if (score <= 200)
         {
             timer.resetTime -= 0.5f;
         }
     }
 
-    private void PlayScoreFx()
+    private void IsItTimeToSpeedThingsUp()
+    {
+        if (score <= 200)
+        {
+            gameSpeed += 0.1f;
+            playerMovement.SpeedThingsUp(gameSpeed);
+        }
+    }
+
+    private void PlayScoreFx(int modulusCheck)
     {
         cameraShake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
-        int scoreToFullRefill = score % 10;
-        if (scoreToFullRefill == 0)
-        {
-            playerMovement.refillAll();
-        }
 
-        int _modulatedScore = score % 5;
-
-        if (_modulatedScore == 0)
+        if (modulusCheck == 0)
         {
-            cameraShake.CameraShakeFx();
+            cameraShake.CameraShakeFx(0.5f);
             AudioManager.Instance.PlayCoolerCoinSound();
         }
         else
@@ -89,4 +94,38 @@ public class GameManager : MonoBehaviour
             AudioManager.Instance.PlayCoinSound();
         }
     }
+
+    private void FillUpPlayerAbilities()
+    {
+        playerMovement.refillAll();
+    }
+
+    private void ModulusChecks()
+    {
+        int modCheckOneHundred = score % 100;
+        int modCheckFifty = score % 50;
+        int modCheckTen = score % 10;
+        int modCheckFive = score % 5;
+
+        if (modCheckOneHundred == 0)
+        {
+            shakeHarder = true;
+            IsItTimeToSpeedThingsUp();
+        }
+
+        if (modCheckFifty == 0)
+        {
+            DecreaseTimeToLose();
+        }
+
+        if (modCheckTen == 0)
+        {
+            FillUpPlayerAbilities();
+        }
+
+        PlayScoreFx(modCheckFive);
+    }
+
+
+    public void DestroyThyself() { Destroy(gameObject); }
 }

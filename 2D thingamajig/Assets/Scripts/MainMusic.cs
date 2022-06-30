@@ -13,6 +13,7 @@ public class MainMusic : MonoBehaviour
     void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        audioSource.pitch = 1f;
 
         int _randomclip = Random.Range(1, 4);
 
@@ -28,13 +29,14 @@ public class MainMusic : MonoBehaviour
         {
             audioSource.clip = audioClip3;
         }
-
-
     }
 
     private void Start()
     {
         audioSource.Play();
     }
-
+    private void Update()
+    {
+        audioSource.pitch = GameManager.Instance.gameSpeed;
+    }
 }
