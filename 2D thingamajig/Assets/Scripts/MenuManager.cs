@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using TMPro;
 
@@ -30,11 +31,15 @@ public class MenuManager : MonoBehaviour
     {
         controlsScreen.SetActive(true);
         exitControlsButton.onClick.AddListener(() => { TurnOffControlsScreen(); });
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(exitControlsButton.gameObject);
     }
 
     private void TurnOffControlsScreen()
     {
         controlsScreen.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(controlsButton.gameObject);
     }
 
     private void QuitGame()

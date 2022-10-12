@@ -1,13 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private Vector2 mousePos;
+
     private Rigidbody2D rb2d;
     [SerializeField] float dashPower;
     [SerializeField] float jumpPower;
@@ -85,6 +84,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        GetMousePos();
         Movement();
         JetPack();
         IncreaseFallSpeedOverTime();
@@ -105,15 +105,18 @@ public class PlayerMovement : MonoBehaviour
     }
     void MidAirDash(InputAction.CallbackContext obj)
     {
+        //Dashing to mouse, but now needs to be changed so it works with controller now aswell
+        Vector2 dashDir = (Vector3)mousePos - transform.position;
+
         Vector3 vel = rb2d.velocity;
         if (!isGrounded && dashesLeft > 0)
         {
-            AudioManager.Instance.PlayDashSound();
+            AudioManager.Instance.PlayOneShot(AudioManager.Instance.dashSound);
             vel.y = 0;
             rb2d.gravityScale = 6;
             rb2d.velocity = vel;
             dashesLeft--;
-            rb2d.AddForce(dashPower * moveDir, ForceMode2D.Impulse);
+            rb2d.AddForce(dashPower * dashDir.normalized, ForceMode2D.Impulse);
         }
     }
 
@@ -136,7 +139,7 @@ public class PlayerMovement : MonoBehaviour
                     transform.DORotate(new Vector3(0f, 0f, -360f), 1f, RotateMode.LocalAxisAdd);
                 }
             }
-            AudioManager.Instance.PlayJumpSound();
+            AudioManager.Instance.PlayOneShot(AudioManager.Instance.jumpSound);
             DoubleJumpFx.Emit(1000);
             vel.y = 0;
             rb2d.gravityScale = 6;
@@ -218,7 +221,11 @@ public class PlayerMovement : MonoBehaviour
     public void SpeedThingsUp(float speedFactor)
     {
         dashPower *= speedFactor;
-        //jumpPower *= speedFactor;
+    }
+
+    private void GetMousePos()
+    {
+        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
@@ -11,7 +8,6 @@ public class GameManager : MonoBehaviour
     public bool shakeHarder;
     public int score;
     public float gameSpeed;
-
 
     private CameraShake cameraShake;
     public TMP_Text scoreText;
@@ -86,12 +82,12 @@ public class GameManager : MonoBehaviour
         if (modulusCheck == 0)
         {
             cameraShake.CameraShakeFx(0.5f);
-            AudioManager.Instance.PlayCoolerCoinSound();
+            AudioManager.Instance.PlayOneShot(AudioManager.Instance.coolerCoinSound);
         }
         else
         {
             playerMovement.fuelRefill();
-            AudioManager.Instance.PlayCoinSound();
+            AudioManager.Instance.PlayOneShot(AudioManager.Instance.coinSound);
         }
     }
 

@@ -9,11 +9,11 @@ public class AudioManager : MonoBehaviour
 
     private AudioSource audioSource;
 
-    [SerializeField] AudioClip jumpSound;
-    [SerializeField] AudioClip dashSound;
-    [SerializeField] AudioClip coinSound;
-    [SerializeField] AudioClip coolerCoinSound;
-    [SerializeField] AudioClip jetPackSound;
+    public AudioClip jumpSound;
+    public AudioClip dashSound;
+    public AudioClip coinSound;
+    public AudioClip coolerCoinSound;
+    public AudioClip jetPackSound;
 
     private void Awake()
     {
@@ -28,26 +28,10 @@ public class AudioManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    public void PlayJumpSound()
+    public void PlayOneShot(AudioClip audioClip)
     {
-        audioSource.PlayOneShot(jumpSound);
+        audioSource.PlayOneShot(audioClip);
     }
-
-    public void PlayDashSound()
-    {
-        audioSource.PlayOneShot(dashSound);
-    }
-
-    public void PlayCoinSound()
-    {
-        audioSource.PlayOneShot(coinSound);
-    }
-
-    public void PlayCoolerCoinSound()
-    {
-        audioSource.PlayOneShot(coolerCoinSound);
-    }
-
 
     public void PlayJetPackSound()
     {

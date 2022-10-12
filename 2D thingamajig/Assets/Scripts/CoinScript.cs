@@ -10,6 +10,9 @@ public class CoinScript : MonoBehaviour
     [SerializeField] int coinValue;
     private ParticleSystem coinPfx;
 
+    public delegate void CoinCollected();
+    public static event CoinCollected coinCollected;
+
     private void Start()
     {
         timer = GameObject.Find("TimerHolder").GetComponent<Timer>();
@@ -36,9 +39,8 @@ public class CoinScript : MonoBehaviour
     {
         if (other.name == "Player")
         {
+            coinCollected?.Invoke();
             timer.timeLeft = timer.resetTime;
-            coinPfx.Emit(300);
-            GameManager.Instance.AddScore(coinValue);
             SpawnInNewLocation();
         }
     }
