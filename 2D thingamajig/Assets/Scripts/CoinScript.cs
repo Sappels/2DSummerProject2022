@@ -5,6 +5,10 @@ using TMPro;
 
 public class CoinScript : MonoBehaviour
 {
+    [SerializeField] private float minX;
+    [SerializeField] private float maxX;
+    [SerializeField] private float minY;
+    [SerializeField] private float maxY;
 
     private Timer timer;
     [SerializeField] int coinValue;
@@ -24,12 +28,12 @@ public class CoinScript : MonoBehaviour
     private void SpawnInNewLocation()
     {
         Vector2 currentLocation = transform.position;
-        Vector2 newLocation = new Vector2(Random.Range(-20f, 20f), Random.Range(0f, 18f));
+        Vector2 newLocation = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
 
         Vector2 comparePos = currentLocation - newLocation;
         if (comparePos.x < 2f || comparePos.y < 2f)
         {
-            newLocation = new Vector2(Random.Range(-20f, 20f), Random.Range(0f, 18f));
+            newLocation = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
         }
 
         transform.position = newLocation;
