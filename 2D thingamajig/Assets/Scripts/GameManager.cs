@@ -122,6 +122,5 @@ public class GameManager : MonoBehaviour
         PlayScoreFx(modCheckFive);
     }
 
-
     public void DestroyThyself() { Destroy(gameObject); }
 }
