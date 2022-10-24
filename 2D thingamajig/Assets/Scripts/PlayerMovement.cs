@@ -2,12 +2,14 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
     private Vector2 mousePos;
 
     private Rigidbody2D rb2d;
+    [Header("Floats")]
     [SerializeField] float dashPower;
     [SerializeField] float jumpPower;
     [SerializeField] float jetPower;
@@ -22,14 +24,18 @@ public class PlayerMovement : MonoBehaviour
     private int dashesLeft;
     private int jumpsLeft;
     private Vector2 moveDir;
+
+    [Header("Other")]
     [SerializeField] LayerMask groundLayer;
     [SerializeField] bool isGrounded;
     [SerializeField] bool isJetPackTurnedOn;
-    [SerializeField] TMP_Text dashesLeftText;
-    [SerializeField] TMP_Text jumpsLeftText;
-    [SerializeField] TMP_Text fuelLeftText;
     [SerializeField] ParticleSystem jetPackFx;
     [SerializeField] ParticleSystem DoubleJumpFx;
+
+    [Header("Slider UI")]
+    [SerializeField] Image JumpSliderUI;
+    [SerializeField] Image FuelSliderUI;
+    [SerializeField] Image DashSliderUI;
 
     //Input stuff
     private PlayerInput playerInput;
@@ -90,11 +96,11 @@ public class PlayerMovement : MonoBehaviour
         IncreaseFallSpeedOverTime();
 
         //Stupid UI stuff
-        dashesLeftText.text = "D: " + dashesLeft.ToString();
-        jumpsLeftText.text = "J: " + jumpsLeft.ToString();
+        JumpSliderUI.fillAmount = (jumpsLeft / 2f);
+        DashSliderUI.fillAmount = dashesLeft;
 
         int fuelLeft = (int)jetFuel;
-        fuelLeftText.text = "F: " + fuelLeft.ToString();
+        FuelSliderUI.fillAmount = (fuelLeft / 100f);
     }
 
     void Movement()

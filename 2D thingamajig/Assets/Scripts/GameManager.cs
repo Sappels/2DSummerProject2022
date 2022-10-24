@@ -18,6 +18,9 @@ public class GameManager : MonoBehaviour
     private static GameManager instance;
     public static GameManager Instance { get { return instance; } }
 
+    public delegate void DifficultyRaise();
+    public static event DifficultyRaise difficultyRaise;
+
     void Start()
     {
         if (instance == null)
@@ -112,6 +115,7 @@ public class GameManager : MonoBehaviour
         if (modCheckFifty == 0)
         {
             DecreaseTimeToLose();
+            difficultyRaise.Invoke();
         }
 
         if (modCheckTen == 0)
