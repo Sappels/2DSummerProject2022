@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
     public bool hasGameStarted = false;
     public bool shakeHarder;
+    public bool isGamepadConnected;
     public int score;
     public float gameSpeed;
 
@@ -36,8 +38,13 @@ public class GameManager : MonoBehaviour
             scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
         }
         scoreText.text = "Score: " + score;
-
     }
+
+    private void FixedUpdate()
+    {
+        isGamepadConnected = Gamepad.all.Count < 1 ? false : true;
+    }
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);

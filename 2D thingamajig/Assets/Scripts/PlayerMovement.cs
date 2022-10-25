@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class PlayerMovement : MonoBehaviour
 {
     private Vector2 mousePos;
-
     private Rigidbody2D rb2d;
+
     [Header("Floats")]
     [SerializeField] float dashPower;
     [SerializeField] float jumpPower;
@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
 
     private int dashesLeft;
     private int jumpsLeft;
-    private Vector2 moveDir;
+    public Vector2 moveDir;
 
     [Header("Other")]
     [SerializeField] LayerMask groundLayer;
@@ -44,6 +44,8 @@ public class PlayerMovement : MonoBehaviour
     private InputAction moveInput;
     private InputAction jetPackInput;
 
+    public CustomOnScreenStick touchMovement;
+
     private void Awake()
     {
         playerInput = new PlayerInput();
@@ -60,8 +62,8 @@ public class PlayerMovement : MonoBehaviour
         dashInput.performed += MidAirDash;
         jumpInput.performed += Jump;
 
-        jetPackInput.started += StartJetPack;
-        jetPackInput.canceled += TurnOffJetPack;
+        jetPackInput.started += FlipJetPackBool;
+        jetPackInput.canceled += FlipJetPackBool;
     }
 
     void Start()
@@ -88,6 +90,18 @@ public class PlayerMovement : MonoBehaviour
         jetPackInput.Disable();
     }
 
+    private void Update()
+    {
+        foreach (Touch touch in Input.touches)
+        {
+            if ((touch.position.x > Screen.width / 2) && (touch.phase == UnityEngine.TouchPhase.Began))
+            {
+                Debug.Log("right");
+                Jump();
+            }
+        }
+    }
+
     void FixedUpdate()
     {
         GetMousePos();
@@ -102,7 +116,6 @@ public class PlayerMovement : MonoBehaviour
         int fuelLeft = (int)jetFuel;
         FuelSliderUI.fillAmount = (fuelLeft / 100f);
     }
-
     void Movement()
     {
         Vector2 mDir = moveDir;
@@ -111,8 +124,10 @@ public class PlayerMovement : MonoBehaviour
     }
     void MidAirDash(InputAction.CallbackContext obj)
     {
-        //Dashing to mouse, but now needs to be changed so it works with controller now aswell
-        Vector2 dashDir = (Vector3)mousePos - transform.position;
+        Vector2 dashDir;
+        //Checks if the player has a gamepad connected or not to determine how the dash should work
+        if (GameManager.Instance.isGamepadConnected) {dashDir = moveDir;}
+        else{dashDir = (Vector3)mousePos - transform.position;}
 
         Vector3 vel = rb2d.velocity;
         if (!isGrounded && dashesLeft > 0)
@@ -125,9 +140,9 @@ public class PlayerMovement : MonoBehaviour
             rb2d.AddForce(dashPower * dashDir.normalized, ForceMode2D.Impulse);
         }
     }
-
-    void Jump(InputAction.CallbackContext obj)
+    private void Jump()
     {
+        
         isGrounded = false;
         speed = airSpeed;
         Vector3 vel = rb2d.velocity;
@@ -154,6 +169,10 @@ public class PlayerMovement : MonoBehaviour
             rb2d.AddForce(jumpPower * Vector2.up);
         }
     }
+    public void Jump(InputAction.CallbackContext obj)
+    {
+        Jump();
+    }
 
     void JetPack()
     {
@@ -173,16 +192,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void StartJetPack(InputAction.CallbackContext obj)
+    void FlipJetPackBool(InputAction.CallbackContext obj)
     {
-        isJetPackTurnedOn = true;
+        isJetPackTurnedOn = !isJetPackTurnedOn;
     }
-
-    void TurnOffJetPack(InputAction.CallbackContext obj)
-    {
-        isJetPackTurnedOn = false;
-    }
-
     void IncreaseFallSpeedOverTime()
     {
         if (rb2d.velocity.y < 0 && !isGrounded)
