@@ -28,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Other")]
     [SerializeField] LayerMask groundLayer;
     [SerializeField] bool isGrounded;
-    [SerializeField] bool isJetPackTurnedOn;
+    public bool isJetPackTurnedOn;
     [SerializeField] ParticleSystem jetPackFx;
     [SerializeField] ParticleSystem DoubleJumpFx;
 
@@ -45,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
     private InputAction jetPackInput;
 
     public CustomOnScreenStick touchMovement;
+    public MoveJoyStickToTouch moveJoyStickToTouch;
 
     private void Awake()
     {
@@ -59,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
         moveInput.performed += cntxt => moveDir = cntxt.ReadValue<Vector2>();
         moveInput.canceled += cntxt => moveDir = Vector2.zero;
 
-        dashInput.performed += MidAirDash;
+        dashInput.performed += MidAirDashInput;
         jumpInput.performed += Jump;
 
         jetPackInput.started += FlipJetPackBool;
@@ -92,12 +93,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+
         foreach (Touch touch in Input.touches)
         {
             if ((touch.position.x > Screen.width / 2) && (touch.phase == UnityEngine.TouchPhase.Began))
             {
-                Debug.Log("right");
-                Jump();
+                //Jump();
             }
         }
     }
@@ -122,11 +123,16 @@ public class PlayerMovement : MonoBehaviour
         mDir.y = 0;
         rb2d.AddForce(speed * mDir * GameManager.Instance.gameSpeed * Time.deltaTime, ForceMode2D.Impulse);
     }
-    void MidAirDash(InputAction.CallbackContext obj)
+    void MidAirDashInput(InputAction.CallbackContext obj)
+    {
+        MidAirDash();
+    }
+    public void MidAirDash()
     {
         Vector2 dashDir;
         //Checks if the player has a gamepad connected or not to determine how the dash should work
-        if (GameManager.Instance.isGamepadConnected) {dashDir = moveDir;}
+        if (touchMovement.gameObject.activeSelf) {dashDir = moveJoyStickToTouch.dashDirection;}
+        else if (GameManager.Instance.isGamepadConnected) {dashDir = moveDir;}
         else{dashDir = (Vector3)mousePos - transform.position;}
 
         Vector3 vel = rb2d.velocity;
@@ -142,7 +148,6 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Jump()
     {
-        
         isGrounded = false;
         speed = airSpeed;
         Vector3 vel = rb2d.velocity;
@@ -212,13 +217,12 @@ public class PlayerMovement : MonoBehaviour
         isGrounded = Physics2D.Raycast(transform.position, Vector2.down, groundCheckRayLength, groundLayer);
         Debug.DrawRay(transform.position, Vector2.down, Color.red, 1f);
 
-        if (isGrounded)
-        {
-            jetFuel = 100;
-            jumpsLeft = 2;
-            dashesLeft = 1;
-            speed = groundSpeed;
-        }
+        if (!isGrounded) return;
+        
+        jetFuel = 100;
+        jumpsLeft = 2;
+        dashesLeft = 1;
+        speed = groundSpeed;
     }
 
     public void fuelRefill()

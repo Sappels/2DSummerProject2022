@@ -30,8 +30,7 @@ public class CoinScript : MonoBehaviour
         Vector2 currentLocation = transform.position;
         Vector2 newLocation = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
 
-        Vector2 comparePos = currentLocation - newLocation;
-        if (comparePos.x < 2f || comparePos.y < 2f)
+        if (Vector2.Distance(currentLocation, newLocation) < 4)
         {
             newLocation = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
         }
