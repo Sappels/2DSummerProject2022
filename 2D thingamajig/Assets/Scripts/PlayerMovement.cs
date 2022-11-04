@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Other")]
     [SerializeField] LayerMask groundLayer;
-    [SerializeField] bool isGrounded;
+    public bool isGrounded;
     public bool isJetPackTurnedOn;
     [SerializeField] ParticleSystem jetPackFx;
     [SerializeField] ParticleSystem DoubleJumpFx;
@@ -45,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
     private InputAction jetPackInput;
 
     public CustomOnScreenStick touchMovement;
-    public MoveJoyStickToTouch moveJoyStickToTouch;
+    public UseAbilitiesWithTouch useAbilitiesWithTouch;
 
     private void Awake()
     {
@@ -93,14 +93,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-
-        foreach (Touch touch in Input.touches)
-        {
-            if ((touch.position.x > Screen.width / 2) && (touch.phase == UnityEngine.TouchPhase.Began))
-            {
-                //Jump();
-            }
-        }
+        RotatePlayerInMoveDirection();
     }
 
     void FixedUpdate()
@@ -117,6 +110,18 @@ public class PlayerMovement : MonoBehaviour
         int fuelLeft = (int)jetFuel;
         FuelSliderUI.fillAmount = (fuelLeft / 100f);
     }
+    private void RotatePlayerInMoveDirection()
+    {
+        switch (moveDir.x)
+        {
+            case > 0:
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+                break;
+            case < 0:
+                transform.rotation = Quaternion.Euler(0, 180f, 0);
+                break;
+        }
+    }
     void Movement()
     {
         Vector2 mDir = moveDir;
@@ -131,7 +136,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector2 dashDir;
         //Checks if the player has a gamepad connected or not to determine how the dash should work
-        if (touchMovement.gameObject.activeSelf) {dashDir = moveJoyStickToTouch.dashDirection;}
+        if (touchMovement.gameObject.activeSelf) {dashDir = useAbilitiesWithTouch.dashDirection;}
         else if (GameManager.Instance.isGamepadConnected) {dashDir = moveDir;}
         else{dashDir = (Vector3)mousePos - transform.position;}
 
