@@ -6,8 +6,10 @@ using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Vector2 mousePos;
-    private Rigidbody2D rb2d;
+    [Header("Vectors")]
+    public Vector2 moveDir;
+
+
 
     [Header("Floats")]
     [SerializeField] float dashPower;
@@ -19,11 +21,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] float groundCheckRayLength;
 
-    private float jetFuel;
 
-    private int dashesLeft;
-    private int jumpsLeft;
-    public Vector2 moveDir;
 
     [Header("Other")]
     [SerializeField] LayerMask groundLayer;
@@ -31,11 +29,18 @@ public class PlayerMovement : MonoBehaviour
     public bool isJetPackTurnedOn;
     [SerializeField] ParticleSystem jetPackFx;
     [SerializeField] ParticleSystem DoubleJumpFx;
+    [SerializeField] ParticleSystem dust;
 
     [Header("Slider UI")]
     [SerializeField] Image JumpSliderUI;
     [SerializeField] Image FuelSliderUI;
     [SerializeField] Image DashSliderUI;
+
+    private Rigidbody2D rb2d;
+    private Vector2 mousePos;
+    private float jetFuel;
+    private int dashesLeft;
+    private int jumpsLeft;
 
     //Input stuff
     private PlayerInput playerInput;
@@ -46,6 +51,9 @@ public class PlayerMovement : MonoBehaviour
 
     public CustomOnScreenStick touchMovement;
     public UseAbilitiesWithTouch useAbilitiesWithTouch;
+
+    public delegate void JustHitTheGround();
+    public static event JustHitTheGround justHitTheGround;
 
     private void Awake()
     {
@@ -94,6 +102,8 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         RotatePlayerInMoveDirection();
+
+        if (moveDir.x > 0) CreateDust();
     }
 
     void FixedUpdate()
@@ -115,10 +125,10 @@ public class PlayerMovement : MonoBehaviour
         switch (moveDir.x)
         {
             case > 0:
-                transform.rotation = Quaternion.Euler(0, 0, 0);
+                transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
                 break;
             case < 0:
-                transform.rotation = Quaternion.Euler(0, 180f, 0);
+                transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
                 break;
         }
     }
@@ -217,13 +227,22 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void CreateDust()
+    {
+        if (isGrounded)
+            dust.Play();
+        else
+            dust.Stop();
+    }
+
     void GroundCheck()
     {
         isGrounded = Physics2D.Raycast(transform.position, Vector2.down, groundCheckRayLength, groundLayer);
         Debug.DrawRay(transform.position, Vector2.down, Color.red, 1f);
 
         if (!isGrounded) return;
-        
+
+        justHitTheGround.Invoke();
         jetFuel = 100;
         jumpsLeft = 2;
         dashesLeft = 1;
@@ -258,7 +277,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("check");
         GroundCheck();
         rb2d.gravityScale = 6;
     }

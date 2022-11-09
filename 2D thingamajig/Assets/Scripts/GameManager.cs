@@ -2,26 +2,36 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.InputSystem;
+using System;
 
 public class GameManager : MonoBehaviour
 {
     public bool hasGameStarted = false;
     public bool shakeHarder;
     public bool isGamepadConnected;
-    public int score;
     public float gameSpeed;
+
+    public int score;
+    public int airScoreHighestSingle;
+    public int airScoreTotal;
 
     private CameraShake cameraShake;
     public TMP_Text scoreText;
 
     private PlayerMovement playerMovement;
-    private Timer timer;
 
     private static GameManager instance;
     public static GameManager Instance { get { return instance; } }
 
-    public delegate void DifficultyRaise();
-    public static event DifficultyRaise difficultyRaise;
+
+    public delegate void ModCheckHundred();
+    public static event ModCheckHundred modCheckHundredEvent;
+
+    public delegate void ModCheckFifty();
+    public static event ModCheckFifty modCheckFiftyEvent;
+
+    public delegate void ModCheckTen();
+    public static event ModCheckTen modCheckTenEvent;
 
     void Start()
     {
@@ -49,7 +59,6 @@ public class GameManager : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
         playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
-        timer = GameObject.Find("TimerHolder").GetComponent<Timer>();
     }
 
     public void ResetGame()
@@ -58,31 +67,29 @@ public class GameManager : MonoBehaviour
         gameSpeed = 1f;
         scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
         score = 0;
+        airScoreTotal = 0;
+        airScoreHighestSingle = 0;
     }
 
-    public void AddScore(int scoreValue)
+    public void AddScore(int scoreToFillUp, int scoreValue)
     {
-        score += scoreValue;
-        ModulusChecks();
-
+        switch (scoreToFillUp)
+        {
+            case 1:
+                Console.WriteLine("Case 1");
+                score += scoreValue;
+                ModulusChecks();
+                break;
+            case 2:
+                Console.WriteLine("Case 2");
+                airScoreTotal += scoreValue;
+                break;
+            case 3:
+                default:
+                break;
+        }
         scoreText.text = "Score: " + score;
-    }
 
-    private void DecreaseTimeToLose()
-    {
-        if (score <= 200)
-        {
-            timer.resetTime -= 0.5f;
-        }
-    }
-
-    private void IsItTimeToSpeedThingsUp()
-    {
-        if (score <= 200)
-        {
-            gameSpeed += 0.1f;
-            playerMovement.SpeedThingsUp(gameSpeed);
-        }
     }
 
     private void PlayScoreFx(int modulusCheck)
@@ -101,13 +108,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void FillUpPlayerAbilities()
-    {
-        playerMovement.refillAll();
-    }
-
     private void ModulusChecks()
     {
+        if (!hasGameStarted) return;
+
         int modCheckOneHundred = score % 100;
         int modCheckFifty = score % 50;
         int modCheckTen = score % 10;
@@ -116,18 +120,17 @@ public class GameManager : MonoBehaviour
         if (modCheckOneHundred == 0)
         {
             shakeHarder = true;
-            IsItTimeToSpeedThingsUp();
+            modCheckHundredEvent.Invoke();
         }
 
         if (modCheckFifty == 0)
         {
-            DecreaseTimeToLose();
-            difficultyRaise.Invoke();
+            modCheckFiftyEvent.Invoke();
         }
 
         if (modCheckTen == 0)
         {
-            FillUpPlayerAbilities();
+            modCheckTenEvent.Invoke();
         }
 
         PlayScoreFx(modCheckFive);

@@ -36,7 +36,6 @@ public class UseAbilitiesWithTouch : MonoBehaviour
                 justDashed = true;
             }
         }
-
     }
 
     private void JumpAndJetPack()

@@ -11,13 +11,17 @@ public class GameOverMenu : MonoBehaviour
     public Button mainMenuButton;
 
     [SerializeField] TMP_Text gameOverScoreText;
+    [SerializeField] TMP_Text gameOverAirScoreText;
 
     private void Start()
     {
+
+
         retryButton.onClick.AddListener(() => { Retry(); });
         mainMenuButton.onClick.AddListener(() => { ReturnToMainMenu(); });
 
         gameOverScoreText.text = "Your score was: " + GameManager.Instance.score;
+        gameOverAirScoreText.text = "Your airtime score was: " + GameManager.Instance.airScoreTotal;
 
         GameManager.Instance.DestroyThyself();
     }
