@@ -775,7 +775,7 @@ MonoBehaviour:
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
   m_Cameras: []
-  m_RendererIndex: -1
+  m_RendererIndex: 0
   m_VolumeLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -1492,7 +1492,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &890323193
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7549,7 +7549,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1714679778}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4265888946bb9b44ab5f86203391e8c9, type: 3}
   m_Name: 
@@ -7677,7 +7677,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1995741675}
   - component: {fileID: 1995741674}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PostProcessing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7697,7 +7697,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IsGlobal: 1
-  priority: 0
+  priority: 1
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: 6ab3715e9a4ef5b40b67312e0bbc557e, type: 2}
@@ -7798,6 +7798,18 @@ PrefabInstance:
     - target: {fileID: 5329281401966058031, guid: b1263309ceb7ce04a9c2c8c24ead4f37, type: 3}
       propertyPath: m_Name
       value: Coin
+      objectReference: {fileID: 0}
+    - target: {fileID: 5329281401966058031, guid: b1263309ceb7ce04a9c2c8c24ead4f37, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5329281403539843700, guid: b1263309ceb7ce04a9c2c8c24ead4f37, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 5329281403539843702, guid: b1263309ceb7ce04a9c2c8c24ead4f37, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1263309ceb7ce04a9c2c8c24ead4f37, type: 3}
@@ -8109,6 +8121,10 @@ PrefabInstance:
       propertyPath: timerText
       value: 
       objectReference: {fileID: 1272306704}
+    - target: {fileID: 7795964140519892866, guid: 3563ada8b9d766e4d8e4f3d4b542bc67, type: 3}
+      propertyPath: adsManager
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7795964140519892867, guid: 3563ada8b9d766e4d8e4f3d4b542bc67, type: 3}
       propertyPath: m_RootOrder
       value: 7

@@ -23,16 +23,17 @@ public class GameOverMenu : MonoBehaviour
         gameOverScoreText.text = "Your score was: " + GameManager.Instance.score;
         gameOverAirScoreText.text = "Your airtime score was: " + GameManager.Instance.airScoreTotal;
 
-        GameManager.Instance.DestroyThyself();
     }
 
     private void Retry()
     {
         SceneManager.LoadScene("GameScene");
+        GameManager.Instance.DestroyThyself();
     }
 
     private void ReturnToMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
+        GameManager.Instance.DestroyThyself();
     }
 }

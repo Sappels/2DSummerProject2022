@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
 
     private PlayerMovement playerMovement;
 
+    public AdsInitializer adsManager;
+
     private static GameManager instance;
     public static GameManager Instance { get { return instance; } }
 
@@ -46,7 +48,13 @@ public class GameManager : MonoBehaviour
         {
             ResetGame();
             scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
+        }else if (SceneManager.GetActiveScene().name == "GameOver" && score >= 5)
+        {
+            adsManager.ShowInterstitialAd();
         }
+
+
+
         scoreText.text = "Score: " + score;
     }
 
@@ -89,7 +97,6 @@ public class GameManager : MonoBehaviour
                 break;
         }
         scoreText.text = "Score: " + score;
-
     }
 
     private void PlayScoreFx(int modulusCheck)
