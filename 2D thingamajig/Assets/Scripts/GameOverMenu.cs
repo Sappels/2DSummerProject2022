@@ -10,18 +10,24 @@ public class GameOverMenu : MonoBehaviour
     public Button retryButton;
     public Button mainMenuButton;
 
-    [SerializeField] TMP_Text gameOverScoreText;
-    [SerializeField] TMP_Text gameOverAirScoreText;
+    [SerializeField] TMP_Text scoreText;
+    [SerializeField] TMP_Text airScoreTotalText;
+    [SerializeField] TMP_Text airScoreSingleText;
+    [SerializeField] TMP_Text highestMultiplierText;
 
     private void Start()
     {
-
-
         retryButton.onClick.AddListener(() => { Retry(); });
         mainMenuButton.onClick.AddListener(() => { ReturnToMainMenu(); });
 
-        gameOverScoreText.text = "Your score was: " + GameManager.Instance.score;
-        gameOverAirScoreText.text = "Your airtime score was: " + GameManager.Instance.airScoreTotal;
+        scoreText.text = "Candy beans collected: " + GameManager.Instance.score;
+        airScoreTotalText.text = "Total airtime score: " + GameManager.Instance.airScoreTotal;
+        airScoreSingleText.text = "Highest airtime Single: " + GameManager.Instance.airScoreHighestSingle;
+
+        if (GameManager.Instance.highestMultiplier >= 64)
+            highestMultiplierText.text = "Highest multiplier: X" + GameManager.Instance.highestMultiplier + " (MAX VALUE!!)";
+        else
+            highestMultiplierText.text = "Highest multiplier: X" + GameManager.Instance.highestMultiplier;
 
     }
 

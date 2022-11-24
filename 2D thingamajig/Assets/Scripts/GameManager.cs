@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.InputSystem;
 using System;
+using System.Net.Sockets;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     public int score;
     public int airScoreHighestSingle;
+    public int highestMultiplier;
     public int airScoreTotal;
 
     private CameraShake cameraShake;
@@ -35,6 +37,9 @@ public class GameManager : MonoBehaviour
     public delegate void ModCheckTen();
     public static event ModCheckTen modCheckTenEvent;
 
+    public delegate void GameStart();
+    public static event GameStart gameStart;
+
     void Start()
     {
         if (instance == null)
@@ -55,7 +60,7 @@ public class GameManager : MonoBehaviour
 
 
 
-        scoreText.text = "Score: " + score;
+        scoreText.text = "Beans: " + score;
     }
 
     private void FixedUpdate()
@@ -77,6 +82,7 @@ public class GameManager : MonoBehaviour
         score = 0;
         airScoreTotal = 0;
         airScoreHighestSingle = 0;
+        highestMultiplier = 0;
     }
 
     public void AddScore(int scoreToFillUp, int scoreValue)
@@ -96,12 +102,14 @@ public class GameManager : MonoBehaviour
                 default:
                 break;
         }
-        scoreText.text = "Score: " + score;
+        scoreText.text = "Beans: " + score;
     }
 
     private void PlayScoreFx(int modulusCheck)
     {
         cameraShake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
+        if (score == 1) return;
+
 
         if (modulusCheck == 0)
         {
@@ -117,7 +125,9 @@ public class GameManager : MonoBehaviour
 
     private void ModulusChecks()
     {
-        if (!hasGameStarted) return;
+        if (!hasGameStarted)
+            gameStart.Invoke();
+
 
         int modCheckOneHundred = score % 100;
         int modCheckFifty = score % 50;

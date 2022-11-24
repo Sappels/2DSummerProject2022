@@ -21,9 +21,6 @@ public class Timer : MonoBehaviour
 
     private void TimeToLose()
     {
-        if (GameManager.Instance.score > 0)
-            GameManager.Instance.hasGameStarted = true;
-
         if (GameManager.Instance.hasGameStarted)
         {
             timeLeft -= Time.deltaTime;

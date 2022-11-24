@@ -6,6 +6,6 @@ public class CoinSpin : MonoBehaviour
 {
     void Update()
     {
-        transform.Rotate(0, 180 * Time.deltaTime, 0);
+        transform.Rotate(0, 0, 180 * Time.deltaTime);
     }
 }

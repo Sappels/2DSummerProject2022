@@ -8,12 +8,13 @@ using UnityEngine.Rendering;
 public class AirTimeScript : MonoBehaviour
 {
     public float airPoints;
+    public float rateMultiplier;
 
     [SerializeField] float pointsPerTick;
-    [SerializeField] float rateMultiplier;
     [SerializeField] float timeToStartTick;
     private float timer;
     private float multiplierTimer;
+    
 
     public TMP_Text scoreText;
 
@@ -37,7 +38,10 @@ public class AirTimeScript : MonoBehaviour
             airPoints += pointsPerTick * rateMultiplier * Time.deltaTime;
         }
         else
+        {
             scoreText.gameObject.SetActive(false);
+            scoreText.transform.localScale = new Vector3(1,1,1);
+        }
 
 
         if (multiplierTimer > 5 && rateMultiplier < 64)

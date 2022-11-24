@@ -8,7 +8,7 @@ public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener, IU
     [SerializeField] bool _testMode = true;
     private string _gameId;
 
-
+    public float minimumScoreToShowAd;
 
 
     private static AdsInitializer instance;
@@ -24,6 +24,7 @@ public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener, IU
         if (Advertisement.isInitialized)
         {
             Debug.Log("Advertisement is Initialized");
+            LoadInterstitialAd();
         }
         else
         {

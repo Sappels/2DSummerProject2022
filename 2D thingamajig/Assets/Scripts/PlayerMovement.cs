@@ -10,7 +10,6 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 moveDir;
 
 
-
     [Header("Floats")]
     [SerializeField] float dashPower;
     [SerializeField] float jumpPower;
@@ -101,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        RotatePlayerInMoveDirection();
+        FlipPlayerInMoveDirection();
 
         if (moveDir.x > 0) CreateDust();
     }
@@ -120,15 +119,15 @@ public class PlayerMovement : MonoBehaviour
         int fuelLeft = (int)jetFuel;
         FuelSliderUI.fillAmount = (fuelLeft / 100f);
     }
-    private void RotatePlayerInMoveDirection()
+    private void FlipPlayerInMoveDirection()
     {
         switch (moveDir.x)
         {
             case > 0:
-                transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
+                transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
                 break;
             case < 0:
-                transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
+                transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
                 break;
         }
     }
@@ -242,6 +241,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (!isGrounded) return;
 
+        transform.rotation = Quaternion.identity;
         justHitTheGround.Invoke();
         jetFuel = 100;
         jumpsLeft = 2;

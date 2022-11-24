@@ -14,6 +14,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip coinSound;
     public AudioClip coolerCoinSound;
     public AudioClip jetPackSound;
+    public AudioClip timeDecreaseSound;
 
     private void Awake()
     {

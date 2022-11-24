@@ -11,8 +11,8 @@ public class CoinScript : MonoBehaviour
     [SerializeField] private float maxY;
 
     private Timer timer;
+    private CandyBeanSpriteChanger candyBeanSpriteChanger;
     [SerializeField] int coinValue;
-    private ParticleSystem coinPfx;
 
     public delegate void CoinCollected();
     public static event CoinCollected coinCollected;
@@ -20,9 +20,7 @@ public class CoinScript : MonoBehaviour
     private void Start()
     {
         timer = GameObject.Find("TimerHolder").GetComponent<Timer>();
-        coinPfx = GetComponent<ParticleSystem>();
-        
-        SpawnInNewLocation();
+        candyBeanSpriteChanger = GetComponentInChildren<CandyBeanSpriteChanger>();
     }
 
     private void SpawnInNewLocation()
@@ -45,6 +43,7 @@ public class CoinScript : MonoBehaviour
             coinCollected?.Invoke();
             timer.timeLeft = timer.resetTime;
             SpawnInNewLocation();
+            candyBeanSpriteChanger.ChangeSprite();
         }
     }
 }

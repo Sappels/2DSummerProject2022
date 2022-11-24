@@ -9,8 +9,12 @@ public class Observer : MonoBehaviour
     private PlayerMovement playerMovement;
     private Timer timer;
     private AirTimeScript airTimeScript;
+    private MainMusic mainMusic;
 
+    public TurnOffWhenGameStart tutorialCanvas;
     public GameObject cameraRedPanel;
+
+    public ParticleSystem coinSpecialPfx;
 
     private void Start()
     {
@@ -18,27 +22,42 @@ public class Observer : MonoBehaviour
         playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         timer = GameObject.Find("TimerHolder").GetComponent<Timer>();
         airTimeScript = GetComponent<AirTimeScript>();
+        mainMusic = GameObject.Find("MainMusic").GetComponent<MainMusic>();
     }
 
     private void OnEnable()
     {
+        GameManager.gameStart += StartTheGame;
         CoinScript.coinCollected += CoinBehaviour;
         PlayerMovement.justHitTheGround += AddAirTimePoints;
         GameManager.modCheckHundredEvent += IsItTimeToSpeedThingsUp;
         GameManager.modCheckFiftyEvent += PlayEnumerators;
         GameManager.modCheckFiftyEvent += DecreaseTimeToLose;
         GameManager.modCheckTenEvent += FillUpPlayerAbilities;
+        GameManager.modCheckTenEvent += PlayCoinSpecialPFX;
     }
 
     private void OnDisable()
     {
+        GameManager.gameStart -= StartTheGame;
         CoinScript.coinCollected -= CoinBehaviour;
         PlayerMovement.justHitTheGround -= AddAirTimePoints;
         GameManager.modCheckHundredEvent -= IsItTimeToSpeedThingsUp;
         GameManager.modCheckFiftyEvent -= PlayEnumerators;
         GameManager.modCheckFiftyEvent -= DecreaseTimeToLose;
-        GameManager.modCheckTenEvent -= FillUpPlayerAbilities;
+        GameManager.modCheckTenEvent -= PlayCoinSpecialPFX;
     }
+
+    private void StartTheGame()
+    {
+        GameManager.Instance.hasGameStarted = true;
+        mainMusic.audioSource.Play();
+        tutorialCanvas.StartFade();
+        AudioManager.Instance.PlayOneShot(AudioManager.Instance.coolerCoinSound);
+        PlayCoinSpecialPFX();
+    }
+
+
 
     private void IsItTimeToSpeedThingsUp()
     {
@@ -52,6 +71,7 @@ public class Observer : MonoBehaviour
     {
         if (GameManager.Instance.score <= 200)
         {
+            AudioManager.Instance.PlayOneShot(AudioManager.Instance.timeDecreaseSound);
             timer.resetTime -= 0.5f;
         }
     }
@@ -72,16 +92,23 @@ public class Observer : MonoBehaviour
         coinPfx.Emit(300);
     }
 
+    private void PlayCoinSpecialPFX()
+    {
+        coinSpecialPfx.Emit(30000);
+    }
+
     private void AddAirTimePoints()
     {
         AddPoints(2, (int)airTimeScript.airPoints);
 
         if (airTimeScript.airPoints > GameManager.Instance.airScoreHighestSingle) 
             GameManager.Instance.airScoreHighestSingle = (int)airTimeScript.airPoints;
+
+        if (airTimeScript.rateMultiplier > GameManager.Instance.highestMultiplier)
+            GameManager.Instance.highestMultiplier = (int)airTimeScript.rateMultiplier;
         
-        Debug.Log("Total: " + GameManager.Instance.airScoreTotal);
-        Debug.Log("Single: " + GameManager.Instance.airScoreHighestSingle);
         airTimeScript.airPoints = 0;
+        airTimeScript.rateMultiplier = 0;
     }
 
     private void AddPoints(int scoreValue, int scoreToFillUp)

@@ -2260,7 +2260,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1444167284
 MonoBehaviour:
@@ -2371,6 +2371,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1505217639}
   m_CullTransparentMesh: 1
+--- !u!1001 &1639218558
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6075211060889995686, guid: 2838db32c3d288840b273d7e85889fc8, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6075211060889995686, guid: 2838db32c3d288840b273d7e85889fc8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6075211060889995686, guid: 2838db32c3d288840b273d7e85889fc8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6075211060889995686, guid: 2838db32c3d288840b273d7e85889fc8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6075211060889995686, guid: 2838db32c3d288840b273d7e85889fc8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6075211060889995686, guid: 2838db32c3d288840b273d7e85889fc8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6075211060889995686, guid: 2838db32c3d288840b273d7e85889fc8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6075211060889995686, guid: 2838db32c3d288840b273d7e85889fc8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6075211060889995686, guid: 2838db32c3d288840b273d7e85889fc8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6075211060889995686, guid: 2838db32c3d288840b273d7e85889fc8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6075211060889995686, guid: 2838db32c3d288840b273d7e85889fc8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6075211060889995688, guid: 2838db32c3d288840b273d7e85889fc8, type: 3}
+      propertyPath: m_Name
+      value: Ads Manager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2838db32c3d288840b273d7e85889fc8, type: 3}
 --- !u!1 &1684468862
 GameObject:
   m_ObjectHideFlags: 0
@@ -2546,7 +2603,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1799564812
 MonoBehaviour:
@@ -3030,7 +3087,6 @@ GameObject:
   - component: {fileID: 2120531937}
   - component: {fileID: 2120531936}
   - component: {fileID: 2120531940}
-  - component: {fileID: 2120531941}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -3116,7 +3172,7 @@ RectTransform:
   - {fileID: 1042950976}
   - {fileID: 1071212656}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3140,21 +3196,6 @@ MonoBehaviour:
   controlsButton: {fileID: 72538935}
   exitControlsButton: {fileID: 936380074}
   quitButton: {fileID: 1380499408}
---- !u!114 &2120531941
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2120531935}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd42ed99d4d49e14b959bd8e3c41062c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _androidGameId: 5013079
-  _iOSGameId: 5013078
-  _testMode: 1
 --- !u!1 &2122380474
 GameObject:
   m_ObjectHideFlags: 0

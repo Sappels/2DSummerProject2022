@@ -8,7 +8,7 @@ public class MainMusic : MonoBehaviour
     [SerializeField] AudioClip audioClip2;
     [SerializeField] AudioClip audioClip3;
 
-    private AudioSource audioSource;
+    public AudioSource audioSource;
 
     void Awake()
     {
@@ -31,10 +31,6 @@ public class MainMusic : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        audioSource.Play();
-    }
     private void Update()
     {
         audioSource.pitch = GameManager.Instance.gameSpeed;
