@@ -53,11 +53,10 @@ public class GameManager : MonoBehaviour
         {
             ResetGame();
             scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
-        }else if (SceneManager.GetActiveScene().name == "GameOver" && score >= 5)
+        }else if (SceneManager.GetActiveScene().name == "GameOver" && score >= adsManager.minimumScoreToShowAd)
         {
             adsManager.ShowInterstitialAd();
         }
-
 
 
         scoreText.text = "Beans: " + score;
@@ -141,14 +140,10 @@ public class GameManager : MonoBehaviour
         }
 
         if (modCheckFifty == 0)
-        {
             modCheckFiftyEvent.Invoke();
-        }
 
         if (modCheckTen == 0)
-        {
             modCheckTenEvent.Invoke();
-        }
 
         PlayScoreFx(modCheckFive);
     }

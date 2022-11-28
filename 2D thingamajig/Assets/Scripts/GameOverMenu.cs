@@ -25,7 +25,7 @@ public class GameOverMenu : MonoBehaviour
         airScoreSingleText.text = "Highest airtime Single: " + GameManager.Instance.airScoreHighestSingle;
 
         if (GameManager.Instance.highestMultiplier >= 64)
-            highestMultiplierText.text = "Highest multiplier: X" + GameManager.Instance.highestMultiplier + " (MAX VALUE!!)";
+            highestMultiplierText.text = "Highest multiplier: X" + GameManager.Instance.highestMultiplier + " (MAX)";
         else
             highestMultiplierText.text = "Highest multiplier: X" + GameManager.Instance.highestMultiplier;
 

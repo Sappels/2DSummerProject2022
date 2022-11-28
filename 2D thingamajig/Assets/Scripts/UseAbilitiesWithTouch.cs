@@ -13,6 +13,19 @@ public class UseAbilitiesWithTouch : MonoBehaviour
     private Vector2 touchStart;
     private Vector2 touchEnd;
 
+
+    private void Start()
+    {
+        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+    }
+
+    private void Update()
+    {
+        JumpAndJetPack();
+        DashSwipe();
+    }
+
+
     private void DashSwipe()
     {
         if (Input.touchCount < 1) return;
@@ -81,14 +94,4 @@ public class UseAbilitiesWithTouch : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
-    }
-
-    private void Update()
-    {
-        JumpAndJetPack();
-        DashSwipe();
-    }
 }

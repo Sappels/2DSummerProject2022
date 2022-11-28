@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
 using UnityEngine.Rendering;
 
 public class AirTimeScript : MonoBehaviour
@@ -19,6 +20,11 @@ public class AirTimeScript : MonoBehaviour
     public TMP_Text scoreText;
 
     [SerializeField] PlayerMovement player;
+
+    private void OnEnable()
+    {
+        scoreText.color = Color.white;
+    }
 
     void Update()
     {
@@ -56,8 +62,8 @@ public class AirTimeScript : MonoBehaviour
             scoreText.text = roundedScore.ToString();
         else
             scoreText.text = "X" + rateMultiplier.ToString() + ": " + roundedScore.ToString();
-    }
 
+    }
 
     async void TextFlash()
     {
