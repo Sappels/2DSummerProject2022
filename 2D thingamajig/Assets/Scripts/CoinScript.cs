@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+using DG.Tweening;
+using System.Collections;
 
 public class CoinScript : MonoBehaviour
 {
@@ -12,6 +11,7 @@ public class CoinScript : MonoBehaviour
 
     private Timer timer;
     private CandyBeanSpriteChanger candyBeanSpriteChanger;
+    private CoinSpin coinSpin;
     [SerializeField] int coinValue;
 
     public delegate void CoinCollected();
@@ -21,6 +21,7 @@ public class CoinScript : MonoBehaviour
     {
         timer = GameObject.Find("TimerHolder").GetComponent<Timer>();
         candyBeanSpriteChanger = GetComponentInChildren<CandyBeanSpriteChanger>();
+        coinSpin = GetComponentInChildren<CoinSpin>();
     }
 
     private void SpawnInNewLocation()
@@ -44,6 +45,9 @@ public class CoinScript : MonoBehaviour
             timer.timeLeft = timer.resetTime;
             SpawnInNewLocation();
             candyBeanSpriteChanger.ChangeSprite();
+            StopCoroutine(coinSpin.SpeedUpSpin());
+            StartCoroutine(coinSpin.SpeedUpSpin());
+
         }
     }
 }

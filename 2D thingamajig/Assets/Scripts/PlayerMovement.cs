@@ -9,7 +9,6 @@ public class PlayerMovement : MonoBehaviour
     [Header("Vectors")]
     public Vector2 moveDir;
 
-
     [Header("Floats")]
     [SerializeField] float dashPower;
     [SerializeField] float jumpPower;
@@ -19,8 +18,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float airSpeed;
     [SerializeField] float speed;
     [SerializeField] float groundCheckRayLength;
-
-
 
     [Header("Other")]
     [SerializeField] LayerMask groundLayer;
@@ -50,6 +47,7 @@ public class PlayerMovement : MonoBehaviour
 
     public CustomOnScreenStick touchMovement;
     public UseAbilitiesWithTouch useAbilitiesWithTouch;
+    private AbilityIcons abilityIcons;
 
     public delegate void JustHitTheGround();
     public static event JustHitTheGround justHitTheGround;
@@ -80,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
         jumpsLeft = 2;
         jetFuel = 100f;
         rb2d = GetComponent<Rigidbody2D>();
+        abilityIcons = GameObject.FindGameObjectWithTag("IconHolder").GetComponent<AbilityIcons>();
     }
 
     public void OnEnable()
@@ -119,6 +118,7 @@ public class PlayerMovement : MonoBehaviour
         int fuelLeft = (int)jetFuel;
         FuelSliderUI.fillAmount = (fuelLeft / 100f);
     }
+
     private void FlipPlayerInMoveDirection()
     {
         switch (moveDir.x)
@@ -131,16 +131,19 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
     }
+
     void Movement()
     {
         Vector2 mDir = moveDir;
         mDir.y = 0;
         rb2d.AddForce(speed * mDir * GameManager.Instance.gameSpeed * Time.deltaTime, ForceMode2D.Impulse);
     }
+
     void MidAirDashInput(InputAction.CallbackContext obj)
     {
         MidAirDash();
     }
+
     public void MidAirDash()
     {
         Vector2 dashDir;
@@ -152,6 +155,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 vel = rb2d.velocity;
         if (!isGrounded && dashesLeft > 0)
         {
+            abilityIcons.LowerIconAlpha(abilityIcons.icons[2]);
             AudioManager.Instance.PlayOneShot(AudioManager.Instance.dashSound);
             vel.y = 0;
             rb2d.gravityScale = 6;
@@ -160,11 +164,14 @@ public class PlayerMovement : MonoBehaviour
             rb2d.AddForce(dashPower * dashDir.normalized, ForceMode2D.Impulse);
         }
     }
+
     private void Jump()
     {
         isGrounded = false;
         speed = airSpeed;
         Vector3 vel = rb2d.velocity;
+
+        abilityIcons.FadeJumpIcons(jumpsLeft);
 
         if (jumpsLeft > 0)
         {
@@ -188,6 +195,7 @@ public class PlayerMovement : MonoBehaviour
             rb2d.AddForce(jumpPower * Vector2.up);
         }
     }
+
     public void Jump(InputAction.CallbackContext obj)
     {
         Jump();

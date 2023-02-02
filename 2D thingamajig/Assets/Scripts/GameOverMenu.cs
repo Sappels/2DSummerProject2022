@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -20,6 +18,7 @@ public class GameOverMenu : MonoBehaviour
         retryButton.onClick.AddListener(() => { Retry(); });
         mainMenuButton.onClick.AddListener(() => { ReturnToMainMenu(); });
 
+        SaveManager.Instance.Save();
         scoreText.text = "Candy beans collected: " + GameManager.Instance.score;
         airScoreTotalText.text = "Total airtime score: " + GameManager.Instance.airScoreTotal;
         airScoreSingleText.text = "Highest airtime Single: " + GameManager.Instance.airScoreHighestSingle;
